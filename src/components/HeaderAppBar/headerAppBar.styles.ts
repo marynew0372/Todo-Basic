@@ -5,8 +5,11 @@ import Box from '@mui/material/Box';
 
 
 export const AppBarStyled = styled(AppBar)`
+    // top: 300px;
+    // position: absolute !important;
+    // width: 450px !important;
+    // height: 69px;
     box-shadow: 0px 0px 10px -3px rgba(0, 0, 0, 1) !important;
-
     border-radius: 10px;
     background-color: #9c27b0 !important;
     margin-bottom: 20px;

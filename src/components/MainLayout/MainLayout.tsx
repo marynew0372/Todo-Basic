@@ -37,12 +37,12 @@ const MainLayout = () => {
     }, []);
     
     const handleAddTask = async (taskText: string) => {
-        dispatch(addTaskThunk({taskText}));
+        await dispatch(addTaskThunk({taskText}));
         dispatch(fetchTaskThunk({page, limit}));
     };
     
     const handleDeleteTask = async (id: number) => {
-        dispatch(deleteTaskThunk({id}));
+        await dispatch(deleteTaskThunk({id}));
         dispatch(fetchTaskThunk({page, limit}));
     };
 

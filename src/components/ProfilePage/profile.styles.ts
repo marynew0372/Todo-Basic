@@ -9,6 +9,7 @@ export const BoxStyled = styled(Box)`
 
     display: flex;
     justify-content: center;
+    align-items: center;
     flex-wrap: wrap;
     width: 450px;
     height: 512px;
