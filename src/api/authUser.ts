@@ -1,7 +1,7 @@
 import axios from "axios";
-import { loadAuthenticatedStatusToLocalStorage, loadTokensFromLocalStorage } from '../utils/localStorage';
+import { loadTokensFromLocalStorage } from '../utils/localStorage';
 import { store } from "../../store/store";
-import { AuthStatus, login, removeTokens, setTokensWhenRefreshed } from "../../store/AuthReducers/authSlice";
+import { login, removeTokens, setTokensWhenRefreshed } from "../../store/AuthReducers/authSlice";
 
 export const API_URL = 'http://localhost:3001';
 
@@ -42,7 +42,8 @@ api.interceptors.response.use(
     if (
       error.response.status === 401 &&
       !originalRequest._retry &&
-      !(originalRequest.url?.includes('/auth/change-password'))
+      !(originalRequest.url?.includes('/auth/change-password')) &&
+      !(originalRequest.url?.includes('/auth/login'))
     ) {
       // Помечаем запрос как повторный
       originalRequest._retry = true;

@@ -64,7 +64,8 @@ export const loginUserThunk = createAsyncThunk<
             return tokens;
         } catch (error: AxiosError | unknown) {
             if (axios.isAxiosError(error) && error.response) {
-                const status = error.status;
+                console.log(error);
+                const status = error.response.status;
                 const message = status === 401 ? 'Неправильный логин или пароль' : 'Неизвестный статус ошибки';
                 console.log(error)
                 return thunkAPI.rejectWithValue({ status, message });

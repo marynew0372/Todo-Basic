@@ -1,6 +1,5 @@
 import { ButtonStyled } from '../../MainLayout/AddTodo/button.styles.ts';
 import TextField from '@mui/material/TextField';
-import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -12,7 +11,6 @@ import Snackbar, { SnackbarCloseReason } from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import * as React from "react";
 import { clearSendingStatus, SendingStatus } from '../../../../store/AuthReducers/authSlice.ts';
-import DialogContentText from '@mui/material/DialogContentText';
 import { DialogStyled } from './changePassword.styled.ts';
 
 
@@ -99,13 +97,15 @@ const ChangePasswordDialog: React.FC<ChangePasswordDialogProps> = ({ open, onClo
 
     const handleChangePassword = async () => {
         if (!errorVisual.oldPassword && !errorVisual.newPassword) {
-            dispatch(changePasswordThunk(formData));
+            await dispatch(changePasswordThunk(formData));
             setFormData((prev) => ({
             ...prev,
             oldPassword: '',
             newPassword: ''
             }))
-            handleCloseDialog();
+            setTimeout(() => {
+                handleCloseDialog();
+            }, 1000);
         }
     }
 

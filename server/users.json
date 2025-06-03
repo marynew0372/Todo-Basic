@@ -2,8 +2,15 @@
   {
     "id": 1748889795710,
     "email": "test@mail.ru",
-    "password": "$2b$10$2oyZ06MLbEp9ZODbKuECC.MNPhW3/Ak75uMotFInM7xyxJPvjG.mK",
+    "password": "$2b$10$2q0EHCZZ2eLjVj.Tu.iZ0OdNbsn4eg5oJqsTG7UFbePOk4n0Qpx/6",
     "age": "22",
     "createdAt": "2025-06-02T18:43:15.710Z"
+  },
+  {
+    "id": 1748948877896,
+    "email": "23123@mail.ru",
+    "password": "$2b$10$YXCVO7DSvpFDC2ttipF4lOkOvGi.d9B/Uc2qsFGLsnW5oJ2ezBaTu",
+    "age": null,
+    "createdAt": "2025-06-03T11:07:57.896Z"
   }
 ]

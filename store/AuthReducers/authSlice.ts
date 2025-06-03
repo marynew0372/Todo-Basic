@@ -81,7 +81,7 @@ const authSlice = createSlice({
             saveTokensToLocalStorage(tokens);
         })
         .addCase(registerUserThunk.rejected, (state, action) => {
-            state.authentication = AuthStatus.Unauthenticated;
+            state.authentication = AuthStatus.Pending;
             state.sendingStatusText = action.payload ? action.payload : { status: 500, message: 'неизвестная ошибка' }
         })
 
@@ -89,13 +89,15 @@ const authSlice = createSlice({
         .addCase(loginUserThunk.fulfilled, (state, action: PayloadAction<Tokens>) => {
             state.authentication = AuthStatus.Authenticated;
             state.sendingStatusText = null;
+            console.log(state.sendingStatusText);
 
             const tokens = action.payload;
             saveTokensToLocalStorage(tokens);
         })
         .addCase(loginUserThunk.rejected, (state, action) => {
-            state.authentication = AuthStatus.Unauthenticated;
+            state.authentication = AuthStatus.Pending;
             state.sendingStatusText = action.payload ? action.payload : { status: 500, message: 'неизвестная ошибка' };
+            console.log(state.sendingStatusText);
         })
 
         // Получение профиля

@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import MainLayout from "./components/MainLayout/MainLayout";
-import RegisterPage from "./components/Authorization/Registration/RegistrationPage";
+import RegisterPage from "./components/Authorization/RegisterPage/RegisterPage";
 import LoginPage from "./components/Authorization/Login/LoginPage";
 import ProfilePage from "./components/ProfilePage/ProfilePage";
 import { ThemeProvider } from 'styled-components';
@@ -8,6 +8,7 @@ import { useThemeContext } from './components/Themes/ThemeContext';
 import { lightTheme, darkTheme } from "./components/Themes/theme";
 import IconButton from '@mui/material/IconButton';
 import ContrastOutlinedIcon from '@mui/icons-material/ContrastOutlined';
+import NotFoudPage from "./components/NotFound/NotFoundPage";
 
 export interface TaskDate {
     id: number;
@@ -30,6 +31,7 @@ const App = () => {
                 <Route path='/register' element={<RegisterPage />} />
                 <Route path='/login' element={<LoginPage />} />
                 <Route path='/profile' element={<ProfilePage />} />
+                <Route path='*' element={<NotFoudPage />} />
             </Routes>
         </ThemeProvider>
     );

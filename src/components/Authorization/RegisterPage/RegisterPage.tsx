@@ -1,11 +1,10 @@
 import * as React from 'react';
 import Snackbar, { SnackbarCloseReason } from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
-import Button from '@mui/material/Button';
 import GlobalStyle from '../../Themes/globalStyles';
 import HeaderAppBar from "../../HeaderAppBar/HeaderAppBar";
 import { useState } from 'react';
-import { BoxStyled, TextFieldStyled } from './registrationPage.styles';
+import { BoxStyled, TextFieldStyled } from './registerPage.styles';
 import isEmail from 'validator/lib/isEmail';
 import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
 import { registerUserThunk } from '../../../../store/AuthReducers/authThunks';
@@ -23,15 +22,15 @@ const RegisterPage = () => {
     const [globalStateDataError, setGlobalStateDataError] = useState(false);
 
     interface FormData {
-        email: string,
-        password: string,
+        email: string | undefined,
+        password: string | undefined,
         age?: string | undefined
     }
 
     const [formData, setFormData] = useState<FormData>({
-        email: '',
-        password: '',
-        age: '',
+        email: undefined,
+        password: undefined,
+        age: undefined,
     });
 
     const [errorsVisual, setErrorsVisual] = useState({
@@ -65,6 +64,10 @@ const RegisterPage = () => {
                 ...prev,
                 email: true
             }));
+            setFormData(prev => ({
+            ...prev,
+            email: undefined
+            }));
         } else {
             setErrorsText(prev => ({
                 ...prev,
@@ -89,10 +92,14 @@ const RegisterPage = () => {
             setErrorsText(prev => ({
                 ...prev,
                 password: 'Минимальная длина пароля: 6 символов'
-            }))
+            }));
             setErrorsVisual(prev => ({
                 ...prev,
                 password: true
+            }));
+            setFormData(prev => ({
+            ...prev,
+            password: undefined
             }));
         } else {
             setErrorsText(prev => ({
@@ -124,7 +131,7 @@ const RegisterPage = () => {
 
     const handleRegistration = async () => {
         const {email, password, age} = formData;
-        if (!errorsVisual.email && !errorsVisual.password) {
+        if (!errorsVisual.email && !errorsVisual.password && email && password) {
                 dispatch(registerUserThunk({email, password, age}));
                 if (authentication === AuthStatus.Unauthenticated) {
                     setGlobalStateDataError(false);
@@ -153,7 +160,7 @@ const RegisterPage = () => {
 
     return (
         <>
-            {authentication === AuthStatus.Unauthenticated && 
+            {authentication === AuthStatus.Pending &&
                 <Snackbar open={globalStateDataError} autoHideDuration={2000} onClose={handleCloseAlert}>
                     <Alert
                     onClose={handleCloseAlert}
@@ -165,7 +172,7 @@ const RegisterPage = () => {
                     </Alert>
                 </Snackbar>
             }
-            {authentication === AuthStatus.Unauthenticated && 
+            {authentication === AuthStatus.Pending && 
                 <Snackbar open={Boolean(authErrorPayLoad)} autoHideDuration={2000} onClose={handleCloseAlert}>
                     <Alert
                     onClose={handleCloseAlert}
