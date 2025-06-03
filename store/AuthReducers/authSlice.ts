@@ -89,7 +89,6 @@ const authSlice = createSlice({
         .addCase(loginUserThunk.fulfilled, (state, action: PayloadAction<Tokens>) => {
             state.authentication = AuthStatus.Authenticated;
             state.sendingStatusText = null;
-            console.log(state.sendingStatusText);
 
             const tokens = action.payload;
             saveTokensToLocalStorage(tokens);

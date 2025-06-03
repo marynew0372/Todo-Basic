@@ -37,8 +37,7 @@ api.interceptors.response.use(
     // const authenticated = loadAuthenticatedStatusToLocalStorage()
     // Получаем оригинальный запрос, который вызвал ошибку
     const originalRequest = error.config;
-    console.log(originalRequest);
-
+    
     if (
       error.response.status === 401 &&
       !originalRequest._retry &&
