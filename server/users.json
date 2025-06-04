@@ -19,5 +19,12 @@
     "password": "$2b$10$GmVYX9D8.S2YTm1l8U8yM.snQPMLAEmvDqwNefbPyCmClkpKsJ1Re",
     "age": "32",
     "createdAt": "2025-06-04T19:00:22.142Z"
+  },
+  {
+    "id": 1749064381197,
+    "email": "lol@mail.ru",
+    "password": "$2b$10$WggK2CdVjz4xXA1aFgiGh.jAdqL1Nxoe0Tp.EE2FxzkryT7Auh9Pe",
+    "age": null,
+    "createdAt": "2025-06-04T19:13:01.197Z"
   }
 ]

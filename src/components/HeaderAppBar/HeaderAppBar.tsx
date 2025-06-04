@@ -29,7 +29,6 @@ function HeaderAppBar() {
   const handleLogout = () => {
     removeTokensFromLocalStorage();
     dispatch(logout());
-    console.log('выход из аккаунта')
   }
 
   const navigate = useNavigate();
