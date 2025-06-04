@@ -34,8 +34,6 @@ api.interceptors.response.use(
   (response) => response,
   
   async (error) => {
-    // const authenticated = loadAuthenticatedStatusToLocalStorage()
-    // Получаем оригинальный запрос, который вызвал ошибку
     const originalRequest = error.config;
     
     if (
@@ -44,7 +42,6 @@ api.interceptors.response.use(
       !(originalRequest.url?.includes('/auth/change-password')) &&
       !(originalRequest.url?.includes('/auth/login'))
     ) {
-      // Помечаем запрос как повторный
       originalRequest._retry = true;
 
       if (!isRefreshing) {
@@ -57,18 +54,11 @@ api.interceptors.response.use(
       
           return api(originalRequest);
         } catch (refreshError) {
-          // Если не удалось обновить токен:
-          // 1. Удаляем токены
-          // localStorage.removeItem('accessToken');
-          // localStorage.removeItem('refreshToken');
-          
-          // window.location.href = '/login';
           isRefreshing = false;
           refreshSubscribers = [];
           return Promise.reject(refreshError);
         }
       } else {
-        // Ждём, пока токен обновится
         return new Promise((resolve, _reject) => {
           addRefreshSubscriber((token: string) => {
             originalRequest.headers.Authorization = `Bearer ${token}`;
@@ -77,8 +67,6 @@ api.interceptors.response.use(
         });
       }
     }
-    // Если ошибка не 401 или повторный запрос не удался,
-    // пробрасываем ошибку дальше
     return Promise.reject(error);
   }
 );
