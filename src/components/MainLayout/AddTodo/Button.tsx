@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { ButtonStyled } from './button.styles';
 
-
 interface TaskAddButtonProps {
     onClick: () => void;
 }

@@ -5,7 +5,7 @@ import Alert from '@mui/material/Alert';
 import GlobalStyle from '../../Themes/globalStyles';
 import { BoxStyled, TextFieldStyled } from './loginPage.styles';
 import { useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../../../store/store';
 import { loginUserThunk } from '../../../../store/AuthReducers/authThunks';
 import { selectAuthentication, selectAuthErrorPayLoad } from '../../../../store/selectors';
 import { AuthStatus, clearSendingStatus } from '../../../../store/AuthReducers/authSlice';

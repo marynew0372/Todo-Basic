@@ -6,7 +6,9 @@ import { lightTheme, darkTheme } from "./components/Themes/theme";
 import IconButton from '@mui/material/IconButton';
 import ContrastOutlinedIcon from '@mui/icons-material/ContrastOutlined';
 import NotFoudPage from "./components/NotFound/NotFoundPage";
-import { lazy } from "react";
+import RegisterPage from './components/Authorization/RegisterPage/RegisterPage';
+import ProfilePage from './components/ProfilePage/ProfilePage';
+import LoginPage from './components/Authorization/Login/LoginPage';
 
 export interface TaskDate {
     id: number;
@@ -16,14 +18,8 @@ export interface TaskDate {
 }
 
 const App = () => {
-
-    const RegisterPage = lazy(() => import('./components/Authorization/RegisterPage/RegisterPage'));
-    const LoginPage = lazy(() => import('./components/Authorization/Login/LoginPage'));
-    const ProfilePage = lazy(() => import('./components/ProfilePage/ProfilePage'));
-
-
     const { themeMode, toggleTheme } = useThemeContext();
-    const theme = themeMode === 'light' ? lightTheme : darkTheme
+    const theme = themeMode === 'light' ? lightTheme : darkTheme;
 
     return (
         <ThemeProvider theme={theme}>

@@ -5,7 +5,7 @@ import GlobalStyle from '../Themes/globalStyles';
 import Snackbar, { SnackbarCloseReason } from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import { PaginationTodo } from './Pagination/Pagination';
-import { useAppDispatch, useAppSelector } from '../../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../../store/store';
 import { fetchTaskThunk, addTaskThunk, deleteTaskThunk, editTaskThunk } from '../../../store/TasksReducers/tasksThunks';
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store/store";

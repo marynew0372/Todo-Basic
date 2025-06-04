@@ -2,7 +2,7 @@ import HeaderAppBar from '../HeaderAppBar/HeaderAppBar';
 import GlobalStyle from '../Themes/globalStyles';
 import { BoxStyled } from './profile.styles';
 import { useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../../store/store';
 import { selectAuthentication, selectUserData } from '../../../store/selectors';
 import { getProfileDataThunk } from '../../../store/AuthReducers/authThunks';
 import { ButtonStyled } from '../MainLayout/AddTodo/button.styles';
@@ -12,18 +12,16 @@ import ChangePasswordDialog from './ChangePassword/ChangePassword';
 import ProtectedRoute from '../ProtectedRoute';
 
 const ProfilePage = () => {
-
     const dispatch = useAppDispatch();
-    const authentication = useAppSelector(selectAuthentication);
 
+    const authentication = useAppSelector(selectAuthentication);
     const userData = useAppSelector(selectUserData);
-    const keys = Object.values(userData || {});
-    const [id, email, age, createdAt] = keys;
-    const dateRegistration = new Date(createdAt).toLocaleDateString();
+
+    const { id, email, age, createdAt } = userData || {};
+    const dateRegistration = createdAt && new Date(createdAt).toLocaleDateString();
 
     useEffect(() => {
         dispatch(getProfileDataThunk());
-        console.log('ProfilePage отрендерился')
     }, []);
 
     const handleLogout = () => {

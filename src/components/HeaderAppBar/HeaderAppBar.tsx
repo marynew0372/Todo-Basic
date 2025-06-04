@@ -12,7 +12,7 @@ import { AppBarStyled, ButtonTodoStyled, BoxStyled } from './headerAppBar.styles
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { removeTokensFromLocalStorage } from '../../utils/localStorage';
-import { useAppDispatch, useAppSelector } from '../../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../../store/store';
 import { AuthStatus, logout } from '../../../store/AuthReducers/authSlice';
 import { selectAuthentication } from '../../../store/selectors';
 import { useNavigate } from 'react-router-dom';

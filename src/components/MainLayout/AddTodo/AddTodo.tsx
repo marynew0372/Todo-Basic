@@ -5,6 +5,7 @@ import TaskAddButton from './Button';
 import Snackbar, { SnackbarCloseReason } from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import styled from 'styled-components';
+
 const AlertWrapper = styled.div`
     margin-bottom: 10px;
 `

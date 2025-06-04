@@ -13,12 +13,12 @@ import EditTodo from '../EditTodo/EditTodo';
 import { ListContainer, ButtonSort } from './TodoList.styles';
 import { EditIconCustom, DeleteIconCustom, SwapVertIconCustom } from './TodoList.styles';
 import { useSelector } from 'react-redux';
-import { useAppDispatch } from '../../../../store/hooks';
-import { clearEditAlert, clearToggleCompletedTaskAlert, setTasks } from '../../../../store/TasksReducers/tasksSlice';
-import { RootState } from '../../../../store/store';
+import { useAppDispatch, useAppSelector } from '../../../../store/store';
+import { clearEditAlert, clearToggleCompletedTaskAlert, setTasks, toggleSorted } from '../../../../store/TasksReducers/tasksSlice';
 import { format } from 'date-fns';
 import './styles.css'
 import { ToggleCompletedThunk } from '../../../../store/TasksReducers/tasksThunks';
+import {selectIsSorted, selectSuccessToggleCompletedTask, selectSucessEditTask, selectTasks} from "../../../../store/selectors.ts";
 
 
 interface TodoListProps {
@@ -30,13 +30,14 @@ const TodoList: React.FC<TodoListProps> = ({onDelete, onEdit}) => {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [currentTask, setCurrentTask] = useState<string>('');
     const [currentIndex, setCurrentIndex] = useState<number | null>(null);
-    const [ascending, setAscending] = useState(true);
+    // const [ascending, setAscending] = useState(false);
 
-    const sucessEditTask = useSelector((state: RootState) => state.tasks.sucessEditTask)
-    const successToggleCompletedTask = useSelector((state: RootState) => state.tasks.successToggleCompletedTask);
-
+    const isSorted = useAppSelector(selectIsSorted);
+    const sucessEditTask = useSelector(selectSucessEditTask);
+    const successToggleCompletedTask = useSelector(selectSuccessToggleCompletedTask);
+    const tasks = useSelector(selectTasks);
     const dispatch = useAppDispatch();
-    const tasks = useSelector((state: RootState) => state.tasks.tasks.data);
+
 
     const handleDialogOpen = (task: string, index: number) => {
         setCurrentTask(task);
@@ -56,20 +57,18 @@ const TodoList: React.FC<TodoListProps> = ({onDelete, onEdit}) => {
         }
     }
 
-    const handleSortToggle = () => {
-        setAscending(!ascending);
-        sortTasksByDate(ascending);
-    };
-
-    const sortTasksByDate = (ascending: boolean = true) => {
+    const sortTasksByDate = (asc: boolean) => {
         const sortedTasks = [...tasks].sort((a, b) => {
-            const dateA = new Date(a.createdAt);
-            const dateB = new Date(b.createdAt);
-            return ascending
-                ? dateA.getTime() - dateB.getTime()
-                : dateB.getTime() - dateA.getTime();
+            const dateA = new Date(a.createdAt).getTime();
+            const dateB = new Date(b.createdAt).getTime();
+            return asc ? dateB - dateA : dateA - dateB;
         });
         dispatch(setTasks(sortedTasks));
+    };
+
+    const handleSortToggle = () => {
+        dispatch(toggleSorted());
+        sortTasksByDate(isSorted);
     };
 
     const handleToggleCheckbox = async (id: number) => {
@@ -114,7 +113,7 @@ const TodoList: React.FC<TodoListProps> = ({onDelete, onEdit}) => {
                 </Snackbar>
             }
             <ButtonSort>
-                <IconButton onClick={() => handleSortToggle()}>
+                <IconButton onClick={handleSortToggle}>
                     <SwapVertIconCustom />
                 </IconButton>
             </ButtonSort>
@@ -123,8 +122,8 @@ const TodoList: React.FC<TodoListProps> = ({onDelete, onEdit}) => {
                     <p className='msgNoTask'>Список задач пуст</p>
                 ) : (
                 <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-                    {tasks.map((task, index) => (
-                    <ListItem key={index}>
+                    {tasks.map((task) => (
+                    <ListItem key={task.id}>
                         <ListItemIcon>
                         <Checkbox
                             onChange={() => {
@@ -143,7 +142,7 @@ const TodoList: React.FC<TodoListProps> = ({onDelete, onEdit}) => {
                             }}
                         />
                         </ListItemIcon>
-                        <ListItemText primary={task.text} secondary={format(new Date(task.createdAt), 'dd.MM.yyyy, HH:mm')}/>
+                        <ListItemText primary={task.text} secondary={format(new Date(task.createdAt), 'dd.MM.yyyy, HH:mm:ss')}/>
                         <IconButton edge='end' aria-label="edit" size="large" onClick={() => handleDialogOpen(task.text, task.id)}>
                             <EditIconCustom />
                         </IconButton>

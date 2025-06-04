@@ -4,7 +4,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useState } from 'react';
-import {useAppDispatch, useAppSelector} from '../../../../store/hooks.ts';
+import {useAppDispatch, useAppSelector} from '../../../../store/store';
 import { ChangePassword, changePasswordThunk } from '../../../../store/AuthReducers/authThunks.ts';
 import {selectAuthErrorPayLoad, selectSendingStatus} from "../../../../store/selectors.ts";
 import Snackbar, { SnackbarCloseReason } from "@mui/material/Snackbar";

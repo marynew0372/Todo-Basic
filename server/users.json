@@ -12,5 +12,12 @@
     "password": "$2b$10$YXCVO7DSvpFDC2ttipF4lOkOvGi.d9B/Uc2qsFGLsnW5oJ2ezBaTu",
     "age": null,
     "createdAt": "2025-06-03T11:07:57.896Z"
+  },
+  {
+    "id": 1749063622142,
+    "email": "gg@mail.ru",
+    "password": "$2b$10$GmVYX9D8.S2YTm1l8U8yM.snQPMLAEmvDqwNefbPyCmClkpKsJ1Re",
+    "age": "32",
+    "createdAt": "2025-06-04T19:00:22.142Z"
   }
 ]

@@ -1,5 +1,3 @@
-
-
 const NotFoudPage = () => {
     return (
         <div>Страница не найдена</div>

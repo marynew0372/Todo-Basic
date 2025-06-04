@@ -15,10 +15,12 @@ export interface DataPayload {
     page: number,
     total: number,
     totalPages: number,
+    isSorted: boolean,
 }
 
 interface TaskState {
     tasks: DataPayload;
+    // sortedTasks: DataPayload;
     errorLoadTasks: string | undefined;
     errorCreateTask: string | undefined;
     errorDeleteTask: boolean | undefined,
@@ -34,6 +36,7 @@ const initialState: TaskState = {
         page: 1,
         total: 10,
         totalPages: 1,
+        isSorted: false,
 },
     errorLoadTasks: undefined,
     errorCreateTask: undefined,
@@ -71,12 +74,20 @@ const tasksSlice = createSlice({
         },
         saveLimit(state, action: PayloadAction<number>) {
             state.tasks.limit = action.payload;
+        },
+        toggleSorted(state) {
+            state.tasks.isSorted = state.tasks.isSorted ? false : true;
         }
     },
     extraReducers: (builder) => {
         builder
         //FETCH TASKS
         .addCase(fetchTaskThunk.fulfilled, (state, action: PayloadAction<DataPayload>) => {
+            action.payload.data.sort((a, b) => {
+                const dateA = new Date(a.createdAt).getTime();
+                const dateB = new Date(b.createdAt).getTime();
+                return state.tasks.isSorted ? dateA - dateB : dateB - dateA;
+            });
             state.tasks = action.payload;
             state.errorLoadTasks = undefined;
         })
@@ -123,5 +134,5 @@ const tasksSlice = createSlice({
     }
 });
 
-export const { setTasks, addTask, deleteTask, clearDeleteErrorAlert, clearEditAlert, clearToggleCompletedTaskAlert, savePage, saveLimit} = tasksSlice.actions;
+export const { setTasks, addTask, deleteTask, clearDeleteErrorAlert, clearEditAlert, clearToggleCompletedTaskAlert, savePage, saveLimit, toggleSorted} = tasksSlice.actions;
 export default tasksSlice.reducer;

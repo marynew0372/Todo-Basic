@@ -6,7 +6,7 @@ import HeaderAppBar from "../../HeaderAppBar/HeaderAppBar";
 import { useState } from 'react';
 import { BoxStyled, TextFieldStyled } from './registerPage.styles';
 import isEmail from 'validator/lib/isEmail';
-import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../../../store/store';
 import { registerUserThunk } from '../../../../store/AuthReducers/authThunks';
 import { selectAuthErrorPayLoad, selectAuthentication } from '../../../../store/selectors';
 import { AuthStatus, clearSendingStatus } from '../../../../store/AuthReducers/authSlice';
@@ -50,12 +50,28 @@ const RegisterPage = () => {
     const handleWriteEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = event.target;
 
+        if (/\s/.test(value)) {
+        setErrorsText(prev => ({
+            ...prev,
+            email: 'Почта не должна содержать пробелы'
+        }));
+        setErrorsVisual(prev => ({
+            ...prev,
+            email: true
+        }));
+        setFormData(prev => ({
+            ...prev,
+            email: undefined
+        }));
+        return;
+    }
+
         setFormData(prev => ({
             ...prev,
             email: value
         }))
 
-        if (!isEmail(value) || value.length === 0) {
+        if (!isEmail(value.trim()) || value.length === 0) {
             setErrorsText(prev => ({
                 ...prev,
                 email: 'Недопустимый формат'
@@ -83,12 +99,28 @@ const RegisterPage = () => {
     const handleWritePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = event.target;
 
+        if (/\s/.test(value)) {
+        setErrorsText(prev => ({
+            ...prev,
+            password: 'Пароль не должен содержать пробелы'
+        }));
+        setErrorsVisual(prev => ({
+            ...prev,
+            password: true
+        }));
+        setFormData(prev => ({
+            ...prev,
+            password: undefined
+        }));
+        return;
+    }
+
         setFormData(prev => ({
             ...prev,
             password: value
-        }))
+        }));
 
-        if (value.length < 6) {
+        if (value.trim().length < 6) {
             setErrorsText(prev => ({
                 ...prev,
                 password: 'Минимальная длина пароля: 6 символов'
@@ -98,20 +130,20 @@ const RegisterPage = () => {
                 password: true
             }));
             setFormData(prev => ({
-            ...prev,
-            password: undefined
+                ...prev,
+                password: undefined
             }));
         } else {
             setErrorsText(prev => ({
                 ...prev,
                 password: ''
-            }))
+            }));
             setErrorsVisual(prev => ({
                 ...prev,
                 password: false
             }));
         }
-    }
+    };
 
     const handleWriteAge = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = (event.target);

@@ -1,8 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { ThemeProviderContext } from './components/Themes/ThemeContext';
-import { ThemeProvider as MUIThemeProvider } from '@mui/material/styles';
-import { muiTheme } from './components/Themes/MuiTheme/muiTheme';
 import { Provider } from 'react-redux';
 import { store } from '../store/store';
 import { BrowserRouter } from "react-router-dom";
@@ -16,9 +14,9 @@ createRoot(document.getElementById('root')!).render(
     <BrowserRouter>
         <Provider store={store}>
           <ThemeProviderContext>
-            <MUIThemeProvider theme={muiTheme}>
+            {/* <MUIThemeProvider theme={muiTheme}> */}
               <App/>
-            </MUIThemeProvider>
+            {/* </MUIThemeProvider> */}
           </ThemeProviderContext>
         </Provider>
     </BrowserRouter>
