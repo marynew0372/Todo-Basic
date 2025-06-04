@@ -1,14 +1,12 @@
 import { Route, Routes } from "react-router-dom";
 import MainLayout from "./components/MainLayout/MainLayout";
-import RegisterPage from "./components/Authorization/RegisterPage/RegisterPage";
-import LoginPage from "./components/Authorization/Login/LoginPage";
-import ProfilePage from "./components/ProfilePage/ProfilePage";
 import { ThemeProvider } from 'styled-components';
 import { useThemeContext } from './components/Themes/ThemeContext';
 import { lightTheme, darkTheme } from "./components/Themes/theme";
 import IconButton from '@mui/material/IconButton';
 import ContrastOutlinedIcon from '@mui/icons-material/ContrastOutlined';
 import NotFoudPage from "./components/NotFound/NotFoundPage";
+import { lazy } from "react";
 
 export interface TaskDate {
     id: number;
@@ -18,6 +16,12 @@ export interface TaskDate {
 }
 
 const App = () => {
+
+    const RegisterPage = lazy(() => import('./components/Authorization/RegisterPage/RegisterPage'));
+    const LoginPage = lazy(() => import('./components/Authorization/Login/LoginPage'));
+    const ProfilePage = lazy(() => import('./components/ProfilePage/ProfilePage'));
+
+
     const { themeMode, toggleTheme } = useThemeContext();
     const theme = themeMode === 'light' ? lightTheme : darkTheme
 

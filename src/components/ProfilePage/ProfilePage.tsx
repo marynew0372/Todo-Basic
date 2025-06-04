@@ -23,6 +23,7 @@ const ProfilePage = () => {
 
     useEffect(() => {
         dispatch(getProfileDataThunk());
+        console.log('ProfilePage отрендерился')
     }, []);
 
     const handleLogout = () => {
