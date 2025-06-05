@@ -31,11 +31,7 @@ const RegisterPage = () => {
     const authentication = useAppSelector(selectAuthentication);
 
     const [formData, setFormData] = useState<FormData>(initialFormData);
-    const [errors, setErrors] = useState<{ email: string; password: string; age: string }>({
-        email: '',
-        password: '',
-        age: '',
-    });
+    const [errors, setErrors] = useState<FormData>(initialFormData);
     const [showAlert, setShowAlert] = useState(false);
 
     const handleChange = (field: keyof FormData) => (event: React.ChangeEvent<HTMLInputElement>) => {
