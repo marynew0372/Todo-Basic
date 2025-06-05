@@ -15,7 +15,6 @@ export interface DataPayload {
     page: number,
     total: number,
     totalPages: number,
-    // isSorted: boolean,
 }
 
 interface TaskState {
