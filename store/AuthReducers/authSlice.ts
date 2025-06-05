@@ -112,7 +112,6 @@ const authSlice = createSlice({
 
         //Смена пароля
         .addCase(changePasswordThunk.fulfilled, (state) => {
-            // state.authentication = AuthStatus.Authenticated;
             state.sendingStatus = SendingStatus.Success;
         })
         .addCase(changePasswordThunk.rejected, (state, action) => {

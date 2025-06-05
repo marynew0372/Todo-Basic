@@ -15,4 +15,4 @@ export const selectTotal = (state: RootState) => state.tasks.tasks.total;
 export const selectTotalPages = (state: RootState) => state.tasks.tasks.totalPages;
 export const selectSucessEditTask = (state: RootState) => state.tasks.sucessEditTask;
 export const selectSuccessToggleCompletedTask = (state: RootState) => state.tasks.successToggleCompletedTask;
-export const selectIsSorted = (state: RootState) => state.tasks.tasks.isSorted;
+export const selectIsSorted = (state: RootState) => state.tasks.isSorted;

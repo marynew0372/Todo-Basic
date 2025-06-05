@@ -15,12 +15,12 @@ export interface DataPayload {
     page: number,
     total: number,
     totalPages: number,
-    isSorted: boolean,
+    // isSorted: boolean,
 }
 
 interface TaskState {
     tasks: DataPayload;
-    // sortedTasks: DataPayload;
+    isSorted: boolean,
     errorLoadTasks: string | undefined;
     errorCreateTask: string | undefined;
     errorDeleteTask: boolean | undefined,
@@ -36,8 +36,8 @@ const initialState: TaskState = {
         page: 1,
         total: 10,
         totalPages: 1,
-        isSorted: false,
-},
+    },
+    isSorted: false,
     errorLoadTasks: undefined,
     errorCreateTask: undefined,
     errorDeleteTask: false,
@@ -76,7 +76,7 @@ const tasksSlice = createSlice({
             state.tasks.limit = action.payload;
         },
         toggleSorted(state) {
-            state.tasks.isSorted = state.tasks.isSorted ? false : true;
+            state.isSorted = state.isSorted ? false : true;
         }
     },
     extraReducers: (builder) => {
@@ -86,9 +86,10 @@ const tasksSlice = createSlice({
             action.payload.data.sort((a, b) => {
                 const dateA = new Date(a.createdAt).getTime();
                 const dateB = new Date(b.createdAt).getTime();
-                return state.tasks.isSorted ? dateA - dateB : dateB - dateA;
+                return !state.isSorted ? dateB - dateA : dateA - dateB;
             });
             state.tasks = action.payload;
+            console.log(state.tasks);
             state.errorLoadTasks = undefined;
         })
         .addCase(fetchTaskThunk.rejected, (state, action) => {

@@ -4,14 +4,15 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useState } from 'react';
-import {useAppDispatch, useAppSelector} from '../../../../store/store';
+import { useAppDispatch, useAppSelector } from '../../../../store/store';
 import { ChangePassword, changePasswordThunk } from '../../../../store/AuthReducers/authThunks.ts';
-import {selectAuthErrorPayLoad, selectSendingStatus} from "../../../../store/selectors.ts";
+import { selectAuthErrorPayLoad } from "../../../../store/selectors.ts";
 import Snackbar, { SnackbarCloseReason } from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import * as React from "react";
-import { clearSendingStatus, SendingStatus } from '../../../../store/AuthReducers/authSlice.ts';
+import { clearSendingStatus } from '../../../../store/AuthReducers/authSlice.ts';
 import { DialogStyled } from './changePassword.styled.ts';
+import { validatePassword } from '../../../utils/handleValidationData.ts';
 
 
 interface ChangePasswordDialogProps {
@@ -19,102 +20,55 @@ interface ChangePasswordDialogProps {
     onClose: () => void,
 }
 
+const initialFormData: ChangePassword = {
+    oldPassword: '',
+    newPassword: '',
+}
+
+interface Errors {
+    oldPassword: boolean,
+    newPassword: boolean,
+}
+
+const initialErrors: Errors = {
+    oldPassword: false,
+    newPassword: false,
+}
+
 const ChangePasswordDialog: React.FC<ChangePasswordDialogProps> = ({ open, onClose}) => {
     const dispatch = useAppDispatch();
-    const sendingStatus = useAppSelector(selectSendingStatus);
-
-    const [formData, setFormData] = useState<ChangePassword>({
-        oldPassword: '',
-        newPassword: '' 
-    });
-
-    const [errorVisual, setErrorVisual] = useState({
-            oldPassword: false,
-            newPassword: false 
-        })
-    
-    const [errorsText, setErrorsText] = useState({
-        oldPassword: '',
-        newPassword: '' 
-    })
-
     const authErrorPayLoad = useAppSelector(selectAuthErrorPayLoad);
+    
+    const [formData, setFormData] = useState<ChangePassword>(initialFormData);
+    const [errors, setErrors] = useState<Errors>(initialErrors);
 
-    const handleWriteOldPassword = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const { value } = event.target;
-        setFormData((prev) => ({
-            ...prev,
-            oldPassword: value
-        }))
-        if (value.length < 6) {
-            setErrorVisual((prev) => ({
-                ...prev,
-                oldPassword: true
-            }));
-            setErrorsText((prev) => ({
-                ...prev,
-                oldPassword: 'Минимальная длина пароля: 6 символов'
-            }));
-        } else {
-            setErrorVisual((prev) => ({
-                ...prev,
-                oldPassword: false
-            }));
-            setErrorsText((prev) => ({
-                ...prev,
-                oldPassword: ''
-            }));
-        }
+    const handleChange = (field: keyof ChangePassword) => (event: React.ChangeEvent<HTMLInputElement>) => {
+         const { value } = event.target;
+         setFormData(prev => ({ ...prev, [field]: value }));
+
+         let error = '';
+         if (field === 'oldPassword') error = validatePassword(value);
+         if (field === 'newPassword') error = validatePassword(value);
+
+         setErrors(prev => ({ ...prev, [field]: error}));
     }
 
-    const validateNewPassword = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const { value } = event.target;
-        setFormData((prev) => ({
-            ...prev,
-            newPassword: value
-        }));
-
-        if (value.length < 6) {
-            setErrorVisual((prev) => ({
-                ...prev,
-                newPassword: true
-            }));
-            setErrorsText((prev) => ({
-                ...prev,
-                newPassword: 'Минимальная длина пароля: 6 символов'
-            }));
-        } else {
-            setErrorVisual((prev) => ({
-                ...prev,
-                newPassword: false
-            }));
-            setErrorsText((prev) => ({
-                ...prev,
-                newPassword: ''
-            }));
-        }
-    }
+    const handleCloseDialog = () => {
+        onClose();
+        dispatch(clearSendingStatus());
+    };
 
     const handleChangePassword = async () => {
-        if (!errorVisual.oldPassword && !errorVisual.newPassword) {
+        if (!errors.oldPassword && !errors.newPassword) {
             await dispatch(changePasswordThunk(formData));
             setFormData((prev) => ({
             ...prev,
             oldPassword: '',
             newPassword: ''
             }))
-            setTimeout(() => {
-                handleCloseDialog();
-            }, 1000);
+            !Boolean(authErrorPayLoad) && handleCloseDialog();
         }
     }
-
-    const handleCloseDialog = () => {
-        if (sendingStatus === SendingStatus.Success) {
-            onClose();
-            dispatch(clearSendingStatus());
-        }
-    };
 
     const handleCloseAlert = (
                 _event: React.SyntheticEvent | Event,
@@ -152,11 +106,11 @@ const ChangePasswordDialog: React.FC<ChangePasswordDialogProps> = ({ open, onClo
                 <DialogContent>
                     <TextField
                     value={formData.oldPassword}
-                    onChange={handleWriteOldPassword}
+                    onChange={handleChange('oldPassword')}
                     autoFocus
                     required
-                    error={errorVisual.oldPassword}
-                    helperText={errorsText.oldPassword}
+                    error={!!errors.oldPassword}
+                    helperText={errors.oldPassword}
                     margin="dense"
                     name="old-password"
                     label="Старый пароль"
@@ -166,11 +120,11 @@ const ChangePasswordDialog: React.FC<ChangePasswordDialogProps> = ({ open, onClo
                     />
                     <TextField
                     value={formData.newPassword}
-                    onChange={validateNewPassword}
+                    onChange={handleChange('newPassword')}
                     autoFocus
                     required
-                    error={errorVisual.newPassword}
-                    helperText={errorsText.newPassword}
+                    error={!!errors.newPassword}
+                    helperText={errors.newPassword}
                     margin="dense"
                     name="new-password"
                     label="Новый пароль"
