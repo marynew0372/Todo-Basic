@@ -89,7 +89,6 @@ const tasksSlice = createSlice({
                 return !state.isSorted ? dateB - dateA : dateA - dateB;
             });
             state.tasks = action.payload;
-            console.log(state.tasks);
             state.errorLoadTasks = undefined;
         })
         .addCase(fetchTaskThunk.rejected, (state, action) => {
